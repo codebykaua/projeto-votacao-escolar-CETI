@@ -20,7 +20,7 @@
       <input type="password" id="input-senha-admin" placeholder="Senha de Acesso" />
       
       <button id="btn-entrar-admin">Entrar no Sistema</button>
-      <a href="teste" class="btn-voltar">Voltar para a Urna</a>
+      <a href="../index.html" class="btn-voltar">Voltar para a Urna</a>
     </div>
   </div>
 
@@ -39,20 +39,33 @@
         <label for="select-filtro-sala">Filtrar Resultado por:</label>
         <select id="select-filtro-sala">
           <option value="GERAL">Resultado Geral (Todas as Turmas)</option>
-          <option value="1.o b Matutino">1.o A Matutino</option>
           <option value="1.o A Matutino">1.o A Matutino</option>
           <option value="1.o B Matutino">1.o B Matutino</option>
+          <option value="1.o C Matutino">1.o C Matutino</option>
           <option value="2.o A Matutino">2.o A Matutino</option>
           <option value="2.o B Matutino">2.o B Matutino</option>
+          <option value="2.o C Matutino">2.o C Matutino</option>
           <option value="3.o A Matutino">3.o A Matutino</option>
           <option value="3.o B Matutino">3.o B Matutino</option>
+          <option value="3.o C Matutino">3.o C Matutino</option>
+
           <option value="1.o A Vespertino">1.o A Vespertino</option>
           <option value="1.o B Vespertino">1.o B Vespertino</option>
+          <option value="1.o C Vespertino">1.o C Vespertino</option>
           <option value="2.o A Vespertino">2.o A Vespertino</option>
           <option value="2.o B Vespertino">2.o B Vespertino</option>
+          <option value="2.o C Vespertino">2.o C Vespertino</option>
           <option value="3.o A Vespertino">3.o A Vespertino</option>
           <option value="3.o B Vespertino">3.o B Vespertino</option>
-          <option value="3.o b Vespertino">3.o b Vespertino</option>
+          <option value="3.o C Vespertino">3.o C Vespertino</option>
+
+          <option value="1.o A Noturno">1.o A Noturno</option>
+          <option value="1.o B Noturno">1.o B Noturno</option>
+          <option value="2.o A Noturno">2.o A Noturno</option>
+          <option value="2.o B Noturno">2.o B Noturno</option>
+          <option value="3.o A Noturno">3.o A Noturno</option>
+          <option value="3.o B Noturno">3.o B Noturno</option>
+          <option value="3.o C Noturno">3.o C Noturno</option>
         </select>
         <button id="btn-atualizar-dados">Recalcular Votos</button>
       </div>
@@ -145,11 +158,11 @@
 
     document.getElementById("btn-sair-admin").addEventListener("click", () => {
       auth.signOut().then(() => {
-        window.location.href = "../index.html";
+        window.location.href = "../index.html"; // Ajustado com ../
       });
     });
 
-    // --- LÓGICA DE APURAÇÃO DOS VOTOS E GRÁFICOS ---
+    // --- LÓGICA DE APURAÇÃO AUTOMÁTICA E DINÂMICA ---
     let todosOsVotos = [];
     let meuGrafico = null; 
 
@@ -179,24 +192,24 @@
         votosFiltrados = todosOsVotos.filter(voto => voto.sala === salaSelecionada);
       }
 
-      // 1. A CHAPA FOI ADICIONADA AQUI NO CONTADOR
-      let contagem = {
-        "Renovacao": 0,
-        "Voz Ativa": 0,
-        "Futuro Jovem": 0,
-        "Força Estudantil": 0, // <-- AQUI
-        "NULO": 0
-      };
+      // NOVIDADE: Em vez de lista fixa, iniciamos uma contagem vazia que descobre os nomes sozinha
+      let contagem = { "NULO": 0 };
 
       votosFiltrados.forEach(voto => {
         let chapa = voto.chapaVotada;
-        if (contagem[chapa] !== undefined) {
-          contagem[chapa]++;
-        } else if(chapa === "Nulo" || chapa === "NULO") {
+        
+        if (!chapa || chapa === "NULO" || chapa === "Nulo") {
            contagem["NULO"]++;
+        } else {
+           // Se a chapa ainda não existe na contagem, ele cria na hora
+           if (contagem[chapa] === undefined) {
+             contagem[chapa] = 0;
+           }
+           contagem[chapa]++;
         }
       });
 
+      // Descobre o vencedor (ignora os nulos para achar quem ganhou)
       let chapaVencedora = "Empate / Sem Votos";
       let maxVotos = 0;
       for (const [chapa, qtd] of Object.entries(contagem)) {
@@ -217,51 +230,54 @@
         document.getElementById("texto-vencedor").textContent = `🏆 Liderando: ${chapaVencedora}`;
       }
 
-      desenharGrafico(contagem);
+      desenharGraficoDinâmico(contagem);
     }
 
     document.getElementById("btn-atualizar-dados").addEventListener("click", buscarVotos);
     document.getElementById("select-filtro-sala").addEventListener("change", atualizarPainel);
 
-    // --- CHART.JS (O GRÁFICO) ---
-    function desenharGrafico(contagem) {
+    // --- CHART.JS AUTOMÁTICO ---
+    function desenharGraficoDinâmico(contagem) {
       const ctx = document.getElementById('graficoVotos').getContext('2d');
       
       if (meuGrafico !== null) {
         meuGrafico.destroy();
       }
 
+      // Separa as chapas válidas do NULO, para colocar o Nulo sempre no fim
+      const nomesChapas = Object.keys(contagem).filter(nome => nome !== "NULO");
+      
+      // Monta as listas pro gráfico
+      const labelsDoGrafico = [...nomesChapas, "Nulos"];
+      const dadosDoGrafico = [...nomesChapas.map(nome => contagem[nome]), contagem["NULO"]];
+
+      // Paleta de cores que se repete automaticamente se tiver muitas chapas
+      const paletaCoresFundo = [
+        'rgba(0, 168, 89, 0.7)',  // Verde
+        'rgba(0, 174, 239, 0.7)', // Azul
+        'rgba(247, 148, 29, 0.7)',// Laranja
+        'rgba(156, 39, 176, 0.7)',// Roxo
+        'rgba(233, 30, 99, 0.7)', // Rosa
+        'rgba(63, 81, 181, 0.7)'  // Azul Escuro
+      ];
+      const paletaCoresBorda = ['#00a859', '#00aeef', '#f7941d', '#9c27b0', '#e91e63', '#3f51b5'];
+
+      // Distribui as cores para cada chapa lida
+      const coresFundo = nomesChapas.map((_, i) => paletaCoresFundo[i % paletaCoresFundo.length]);
+      coresFundo.push('rgba(237, 28, 36, 0.7)'); // Vermelho Nulo sempre por último
+
+      const coresBorda = nomesChapas.map((_, i) => paletaCoresBorda[i % paletaCoresBorda.length]);
+      coresBorda.push('#ed1c24'); // Borda do Nulo
+
       meuGrafico = new Chart(ctx, {
         type: 'bar',
         data: {
-          // 2. O NOME DA CHAPA FOI ADICIONADO AQUI NAS LABELS DO GRÁFICO
-          labels: ['Renovação', 'Voz Ativa', 'Futuro Jovem', 'Força Estudantil', 'Nulos'],
+          labels: labelsDoGrafico,
           datasets: [{
             label: 'Quantidade de Votos',
-            // 3. A CONTAGEM DA NOVA CHAPA FOI PUXADA AQUI
-            data: [
-              contagem["Renovacao"], 
-              contagem["Voz Ativa"], 
-              contagem["Futuro Jovem"], 
-              contagem["Força Estudantil"], // <-- AQUI
-              contagem["NULO"]
-            ],
-            // 4. UMA NOVA COR FOI ADICIONADA AQUI (Roxo)
-            backgroundColor: [
-              'rgba(0, 168, 89, 0.7)', 
-              'rgba(0, 174, 239, 0.7)',
-              'rgba(247, 148, 29, 0.7)',
-              'rgba(156, 39, 176, 0.7)', // <-- AQUI (Cor Roxo)
-              'rgba(237, 28, 36, 0.7)' 
-            ],
-            // 5. UMA NOVA COR DE BORDA FOI ADICIONADA AQUI
-            borderColor: [
-              '#00a859', 
-              '#00aeef', 
-              '#f7941d', 
-              '#9c27b0', // <-- AQUI
-              '#ed1c24'
-            ],
+            data: dadosDoGrafico,
+            backgroundColor: coresFundo,
+            borderColor: coresBorda,
             borderWidth: 2,
             borderRadius: 6
           }]

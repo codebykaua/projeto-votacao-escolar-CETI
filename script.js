@@ -3,38 +3,119 @@
    Fluxo: Login -> Votacao -> Confirmacao -> Fim
    =================================================== */
 
-// ---- Dados das chapas (editar aqui) ----
-const chapas = [
-  {
-    numero: "90",
-    nome: "Força Estudantil",
-    lider: { nome: "Lucas Mendes", foto: "images/candidato1.jpg" },
-    vice: { nome: "Ana Beatriz", foto: "images/vice1.jpg" },
-  },
-  {
-    numero: "10",
-    nome: "Renovacao",
-    lider: { nome: "Lucas Mendes", foto: "images/candidato1.jpg" },
-    vice: { nome: "Ana Beatriz", foto: "images/vice1.jpg" },
-  },
-  {
-    numero: "20",
-    nome: "Voz Ativa",
-    lider: { nome: "Maria Clara", foto: "images/candidato2.jpg" },
-    vice: { nome: "Pedro Henrique", foto: "images/vice2.jpg" },
-  },
-  {
-    numero: "30",
-    nome: "Futuro Jovem",
-    lider: { nome: "Gabriel Santos", foto: "images/candidato3.jpg" },
-    vice: { nome: "Julia Fernandes", foto: "images/vice3.jpg" },
-  },
-];
+const chapasPorSala = {
+  // ================= TURNO MATUTINO =================
+  "1.o A Matutino": [
+    { numero: "10", nome: "Renovação 1A Mat", lider: { nome: "Aluno A1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno A2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Voz Ativa 1A Mat", lider: { nome: "Aluno A3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno A4", foto: "images/vice2.jpg" } }
+  ],
+  "1.o B Matutino": [
+    { numero: "10", nome: "Renovação 1B Mat", lider: { nome: "Aluno B1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno B2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Voz Ativa 1B Mat", lider: { nome: "Aluno B3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno B4", foto: "images/vice2.jpg" } }
+  ],
+  "1.o C Matutino": [
+    { numero: "10", nome: "Renovação 1C Mat", lider: { nome: "Aluno C1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno C2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Voz Ativa 1C Mat", lider: { nome: "Aluno C3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno C4", foto: "images/vice2.jpg" } }
+  ],
+  "2.o A Matutino": [
+    { numero: "10", nome: "Renovação 2A Mat", lider: { nome: "Aluno D1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno D2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Voz Ativa 2A Mat", lider: { nome: "Aluno D3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno D4", foto: "images/vice2.jpg" } }
+  ],
+  "2.o B Matutino": [
+    { numero: "10", nome: "Renovação 2B Mat", lider: { nome: "Aluno E1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno E2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Voz Ativa 2B Mat", lider: { nome: "Aluno E3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno E4", foto: "images/vice2.jpg" } }
+  ],
+  "2.o C Matutino": [
+    { numero: "10", nome: "Renovação 2C Mat", lider: { nome: "Aluno F1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno F2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Voz Ativa 2C Mat", lider: { nome: "Aluno F3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno F4", foto: "images/vice2.jpg" } }
+  ],
+  "3.o A Matutino": [
+    { numero: "10", nome: "Renovação 3A Mat", lider: { nome: "Aluno G1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno G2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Voz Ativa 3A Mat", lider: { nome: "Aluno G3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno G4", foto: "images/vice2.jpg" } }
+  ],
+  "3.o B Matutino": [
+    { numero: "10", nome: "Renovação 3B Mat", lider: { nome: "Aluno H1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno H2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Voz Ativa 3B Mat", lider: { nome: "Aluno H3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno H4", foto: "images/vice2.jpg" } }
+  ],
+  "3.o C Matutino": [
+    { numero: "10", nome: "Renovação 3C Mat", lider: { nome: "Aluno I1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno I2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Voz Ativa 3C Mat", lider: { nome: "Aluno I3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno I4", foto: "images/vice2.jpg" } }
+  ],
+
+  // ================= TURNO VESPERTINO =================
+  "1.o A Vespertino": [
+    { numero: "10", nome: "Futuro 1A Vesp", lider: { nome: "Aluno J1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno J2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Força 1A Vesp", lider: { nome: "Aluno J3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno J4", foto: "images/vice2.jpg" } }
+  ],
+  "1.o B Vespertino": [
+    { numero: "10", nome: "Futuro 1B Vesp", lider: { nome: "Aluno K1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno K2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Força 1B Vesp", lider: { nome: "Aluno K3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno K4", foto: "images/vice2.jpg" } }
+  ],
+  "1.o C Vespertino": [
+    { numero: "10", nome: "Futuro 1C Vesp", lider: { nome: "Aluno L1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno L2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Força 1C Vesp", lider: { nome: "Aluno L3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno L4", foto: "images/vice2.jpg" } }
+  ],
+  "2.o A Vespertino": [
+    { numero: "10", nome: "Futuro 2A Vesp", lider: { nome: "Aluno M1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno M2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Força 2A Vesp", lider: { nome: "Aluno M3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno M4", foto: "images/vice2.jpg" } }
+  ],
+  "2.o B Vespertino": [
+    { numero: "10", nome: "Futuro 2B Vesp", lider: { nome: "Aluno N1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno N2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Força 2B Vesp", lider: { nome: "Aluno N3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno N4", foto: "images/vice2.jpg" } }
+  ],
+  "2.o C Vespertino": [
+    { numero: "10", nome: "Futuro 2C Vesp", lider: { nome: "Aluno O1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno O2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Força 2C Vesp", lider: { nome: "Aluno O3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno O4", foto: "images/vice2.jpg" } }
+  ],
+  "3.o A Vespertino": [
+    { numero: "10", nome: "Futuro 3A Vesp", lider: { nome: "Aluno P1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno P2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Força 3A Vesp", lider: { nome: "Aluno P3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno P4", foto: "images/vice2.jpg" } }
+  ],
+  "3.o B Vespertino": [
+    { numero: "10", nome: "Futuro 3B Vesp", lider: { nome: "Aluno Q1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno Q2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Força 3B Vesp", lider: { nome: "Aluno Q3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno Q4", foto: "images/vice2.jpg" } }
+  ],
+  "3.o C Vespertino": [
+    { numero: "10", nome: "Futuro 3C Vesp", lider: { nome: "Aluno R1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno R2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "Força 3C Vesp", lider: { nome: "Aluno R3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno R4", foto: "images/vice2.jpg" } }
+  ],
+
+  // ================= TURNO NOTURNO =================
+  "1.o A Noturno": [
+    { numero: "10", nome: "Liderança 1A Not", lider: { nome: "Aluno S1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno S2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "União 1A Not", lider: { nome: "Aluno S3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno S4", foto: "images/vice2.jpg" } }
+  ],
+  "1.o B Noturno": [
+    { numero: "10", nome: "Liderança 1B Not", lider: { nome: "Aluno T1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno T2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "União 1B Not", lider: { nome: "Aluno T3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno T4", foto: "images/vice2.jpg" } }
+  ],
+  "2.o A Noturno": [
+    { numero: "10", nome: "Liderança 2A Not", lider: { nome: "Aluno U1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno U2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "União 2A Not", lider: { nome: "Aluno U3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno U4", foto: "images/vice2.jpg" } }
+  ],
+  "2.o B Noturno": [
+    { numero: "10", nome: "Liderança 2B Not", lider: { nome: "Aluno V1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno V2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "União 2B Not", lider: { nome: "Aluno V3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno V4", foto: "images/vice2.jpg" } }
+  ],
+  "3.o A Noturno": [
+    { numero: "10", nome: "Liderança 3A Not", lider: { nome: "Aluno W1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno W2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "União 3A Not", lider: { nome: "Aluno W3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno W4", foto: "images/vice2.jpg" } }
+  ],
+  "3.o B Noturno": [
+    { numero: "10", nome: "Liderança 3B Not", lider: { nome: "Aluno X1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno X2", foto: "images/vice1.jpg" } },
+    { numero: "20", "nome": "União 3B Not", lider: { nome: "Aluno X3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno X4", foto: "images/vice2.jpg" } }
+  ],
+  "3.o C Noturno": [
+    { numero: "10", nome: "Liderança 3C Not", lider: { nome: "Aluno Y1", foto: "images/candidato1.jpg" }, vice: { nome: "Aluno Y2", foto: "images/vice1.jpg" } },
+    { numero: "20", nome: "União 3C Not", lider: { nome: "Aluno Y3", foto: "images/candidato2.jpg" }, vice: { nome: "Aluno Y4", foto: "images/vice2.jpg" } }
+  ]
+};
 
 // ---- Estado da aplicacao ----
 let alunoAtual = { matricula: "", sala: "" };
 let digitosVoto = "";
 let chapaEscolhida = null;
+let chapasAtuaisDaSala = []; 
 
 // ---- Elementos do DOM ----
 const screens = {
@@ -73,12 +154,11 @@ function showScreen(name) {
   screens[name].classList.add("active");
 }
 
-// ---- TELA DE LOGIN (Verificação no Firestore) ----
+// ---- TELA DE LOGIN (Verificação no Firestore e Filtro de Sala) ----
 btnLoginConfirm.addEventListener("click", async function () {
   const matricula = inputMatricula.value.trim();
   const sala = selectSala.value;
 
-  // Validacao basica
   if (!matricula || matricula.length < 3) {
     showLoginError("Informe uma matricula valida (minimo 3 digitos).");
     return;
@@ -88,25 +168,28 @@ btnLoginConfirm.addEventListener("click", async function () {
     return;
   }
 
-  // Desabilita botao enquanto checa o banco de dados
+  if (!chapasPorSala[sala] || chapasPorSala[sala].length === 0) {
+     showLoginError("Não há chapas cadastradas para esta sala ainda.");
+     return;
+  }
+
   btnLoginConfirm.disabled = true;
   btnLoginConfirm.textContent = "Verificando...";
 
   try {
-    // Verifica no Firestore se já existe um documento com essa matrícula
     const docRef = db.collection("votos").doc(matricula);
     const docSnap = await docRef.get();
 
     if (docSnap.exists) {
-      // Se o documento existe, o aluno já votou!
       showLoginError("Esta matrícula já registrou um voto!");
       btnLoginConfirm.disabled = false;
       btnLoginConfirm.textContent = "Confirmar";
       return;
     }
 
-    // Se não votou, guarda os dados na memória e vai para a urna
     alunoAtual = { matricula, sala };
+    chapasAtuaisDaSala = chapasPorSala[sala]; 
+    
     hideLoginError();
     btnLoginConfirm.disabled = false;
     btnLoginConfirm.textContent = "Confirmar";
@@ -120,7 +203,6 @@ btnLoginConfirm.addEventListener("click", async function () {
   }
 });
 
-// Permitir somente numeros na matricula
 inputMatricula.addEventListener("input", function () {
   this.value = this.value.replace(/\D/g, "");
 });
@@ -134,8 +216,7 @@ function hideLoginError() {
   loginError.classList.remove("visible");
 }
 
-// ---- TELA DE VOTACAO (teclado numerico) ----
-// Clicar nos botoes do teclado
+// ---- TELA DE VOTACAO ----
 document.querySelectorAll(".key").forEach((key) => {
   key.addEventListener("click", function () {
     const valor = this.dataset.value;
@@ -146,16 +227,14 @@ document.querySelectorAll(".key").forEach((key) => {
   });
 });
 
-// Botao CORRIGIR
 document.getElementById("btn-corrigir").addEventListener("click", function () {
   digitosVoto = "";
   chapaEscolhida = null;
   atualizarDisplay();
 });
 
-// Botao CONFIRMAR (abre overlay)
 document.getElementById("btn-confirmar").addEventListener("click", function () {
-  if (digitosVoto.length < 2) return; // precisa ter 2 digitos
+  if (digitosVoto.length < 2) return; 
 
   if (chapaEscolhida) {
     confirmChapaNome.textContent =
@@ -166,18 +245,15 @@ document.getElementById("btn-confirmar").addEventListener("click", function () {
   overlay.classList.add("active");
 });
 
-// Atualizar o display dos digitos e buscar chapa
 function atualizarDisplay() {
-  // Atualiza caixas de digitos
   digitBox1.textContent = digitosVoto[0] || "";
   digitBox2.textContent = digitosVoto[1] || "";
 
   digitBox1.classList.toggle("filled", digitosVoto.length >= 1);
   digitBox2.classList.toggle("filled", digitosVoto.length >= 2);
 
-  // Se tem 2 digitos, busca a chapa
   if (digitosVoto.length === 2) {
-    const chapa = chapas.find((c) => c.numero === digitosVoto);
+    const chapa = chapasAtuaisDaSala.find((c) => c.numero === digitosVoto);
     if (chapa) {
       chapaEscolhida = chapa;
       mostrarCandidato(chapa);
@@ -186,7 +262,6 @@ function atualizarDisplay() {
       mostrarNulo();
     }
   } else {
-    // Menos de 2 digitos: mostra placeholder
     chapaEscolhida = null;
     esconderInfo();
   }
@@ -220,39 +295,29 @@ function esconderInfo() {
 }
 
 // ---- OVERLAY DE CONFIRMACAO ----
-// Botao SIM
 document.getElementById("btn-confirm-sim").addEventListener("click", function () {
   overlay.classList.remove("active");
-  
-  // Desativa o botão SIM para não clicar duas vezes e bugar o firebase
   this.disabled = true; 
-  
   finalizarVoto();
 });
 
-// Botao NAO
 document.getElementById("btn-confirm-nao").addEventListener("click", function () {
   overlay.classList.remove("active");
 });
 
 // ---- TELA FINAL (Salvando no Firebase) ----
 function finalizarVoto() {
-  // Prepara os dados exatos que você quer salvar no documento da matrícula
   const dadosDoVoto = {
     sala: alunoAtual.sala,
     chapaVotada: chapaEscolhida ? chapaEscolhida.nome : "NULO",
     numeroChapa: chapaEscolhida ? chapaEscolhida.numero : "NULO",
-    dataVoto: firebase.firestore.FieldValue.serverTimestamp() // Salva a hora exata do servidor
+    dataVoto: firebase.firestore.FieldValue.serverTimestamp()
   };
 
-  // Salva no banco: Coleção "votos" -> Documento (Matrícula) -> Dados (Sala, Voto)
   db.collection("votos").doc(alunoAtual.matricula).set(dadosDoVoto)
     .then(function() {
-      // Deu certo! Toca o som e mostra a tela final
       tocarPlim();
       showScreen("fim");
-      
-      // Reativa o botão SIM do overlay para o próximo eleitor
       document.getElementById("btn-confirm-sim").disabled = false;
     })
     .catch(function(error) {
@@ -262,9 +327,7 @@ function finalizarVoto() {
     });
 }
 
-// Botao OK da tela final
 document.getElementById("btn-fim-ok").addEventListener("click", function () {
-  // Limpa tudo e volta ao login
   resetarTudo();
   showScreen("login");
 });
@@ -273,6 +336,7 @@ function resetarTudo() {
   alunoAtual = { matricula: "", sala: "" };
   digitosVoto = "";
   chapaEscolhida = null;
+  chapasAtuaisDaSala = [];
   inputMatricula.value = "";
   selectSala.value = "";
   digitBox1.textContent = "";
@@ -283,12 +347,11 @@ function resetarTudo() {
   hideLoginError();
 }
 
-// ---- Som "plim" via Web Audio API ----
+// ---- Som "plim" ----
 function tocarPlim() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-    // Primeiro tom
     const osc1 = ctx.createOscillator();
     const gain1 = ctx.createGain();
     osc1.type = "sine";
@@ -300,7 +363,6 @@ function tocarPlim() {
     osc1.start(ctx.currentTime);
     osc1.stop(ctx.currentTime + 0.5);
 
-    // Segundo tom (harmonico)
     const osc2 = ctx.createOscillator();
     const gain2 = ctx.createGain();
     osc2.type = "sine";
@@ -311,14 +373,11 @@ function tocarPlim() {
     gain2.connect(ctx.destination);
     osc2.start(ctx.currentTime + 0.08);
     osc2.stop(ctx.currentTime + 0.6);
-  } catch (e) {
-    // Fallback silencioso se Web Audio nao for suportado
-  }
+  } catch (e) {}
 }
 
 // ---- Suporte a teclado fisico ----
 document.addEventListener("keydown", function (e) {
-  // Somente na tela de votacao
   if (!screens.votacao.classList.contains("active")) return;
 
   if (e.key >= "0" && e.key <= "9" && digitosVoto.length < 2) {
@@ -333,5 +392,4 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
-// ---- Inicializacao ----
 showScreen("login");
