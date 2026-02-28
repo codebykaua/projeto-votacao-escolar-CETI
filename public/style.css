@@ -1,0 +1,637 @@
+/* ===================================================
+   URNA ELETRONICA ESCOLAR - Estilos
+   =================================================== */
+
+/* ---------- Reset e Base ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0f1117;
+  --surface: #1a1d27;
+  --surface-light: #242836;
+  --border: #2e3345;
+  --green: #22c55e;
+  --green-dark: #16a34a;
+  --green-glow: rgba(34, 197, 94, 0.15);
+  --red: #ef4444;
+  --red-dark: #dc2626;
+  --yellow: #eab308;
+  --white: #f1f5f9;
+  --gray: #94a3b8;
+  --gray-dark: #64748b;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+body {
+  font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+/* ---------- Container Principal ---------- */
+.app-container {
+  width: 100%;
+  max-width: 900px;
+  padding: 24px;
+}
+
+/* ---------- Telas (ocultar/mostrar) ---------- */
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- TELA DE LOGIN ---------- */
+.login-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 48px 40px;
+  max-width: 440px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-lg);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.login-header .icon-wrapper {
+  width: 64px;
+  height: 64px;
+  background: var(--green-glow);
+  border: 2px solid var(--green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.login-header .icon-wrapper svg {
+  width: 28px;
+  height: 28px;
+  color: var(--green);
+}
+
+.login-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.login-header p {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--gray);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 40px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px var(--green-glow);
+}
+
+.form-group input::placeholder {
+  color: var(--gray-dark);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--green);
+  color: #0a0a0a;
+  width: 100%;
+}
+
+.btn-primary:hover {
+  background: var(--green-dark);
+}
+
+.btn-danger {
+  background: var(--red);
+  color: var(--white);
+}
+
+.btn-danger:hover {
+  background: var(--red-dark);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--gray);
+  border: 1px solid var(--border);
+}
+
+.btn-outline:hover {
+  background: var(--surface-light);
+  color: var(--text);
+}
+
+.login-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: var(--red);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  margin-bottom: 16px;
+  display: none;
+}
+
+.login-error.visible {
+  display: block;
+}
+
+/* ---------- TELA DE VOTACAO ---------- */
+.urna {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.urna-header {
+  background: linear-gradient(135deg, var(--green-dark), var(--green));
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.urna-header h2 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0a0a0a;
+}
+
+.urna-header .badge {
+  margin-left: auto;
+  background: rgba(0, 0, 0, 0.2);
+  color: #0a0a0a;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.urna-body {
+  display: flex;
+  gap: 0;
+}
+
+/* Painel de informacao do candidato */
+.urna-display {
+  flex: 1;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
+  border-right: 1px solid var(--border);
+}
+
+.display-placeholder {
+  text-align: center;
+  color: var(--gray-dark);
+}
+
+.display-placeholder svg {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  opacity: 0.4;
+}
+
+.display-placeholder p {
+  font-size: 0.9375rem;
+}
+
+/* Candidato info */
+.candidato-info {
+  display: none;
+  text-align: center;
+  width: 100%;
+  animation: fadeIn 0.3s ease;
+}
+
+.candidato-info.visible {
+  display: block;
+}
+
+.candidato-nome-chapa {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 4px;
+}
+
+.candidato-numero-display {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.fotos-container {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.foto-card {
+  text-align: center;
+}
+
+.foto-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  margin-bottom: 8px;
+  background: var(--surface-light);
+}
+
+.foto-card .cargo {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--green);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.foto-card .nome {
+  font-size: 0.875rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* Voto nulo */
+.voto-nulo {
+  display: none;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.voto-nulo.visible {
+  display: block;
+}
+
+.voto-nulo .nulo-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.1);
+  border: 2px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.voto-nulo .nulo-icon svg {
+  width: 28px;
+  height: 28px;
+  color: var(--red);
+}
+
+.voto-nulo h3 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 4px;
+}
+
+.voto-nulo p {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* Painel do teclado numerico */
+.urna-keypad {
+  width: 320px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: var(--surface-light);
+}
+
+.keypad-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray);
+  font-weight: 600;
+}
+
+.numero-input-display {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.digit-box {
+  width: 56px;
+  height: 68px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--green);
+  transition: border-color 0.2s;
+}
+
+.digit-box.filled {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px var(--green-glow);
+}
+
+.keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.key {
+  padding: 14px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.key:hover {
+  background: var(--border);
+}
+
+.key:active {
+  transform: scale(0.95);
+  background: var(--green-glow);
+}
+
+.keypad-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.keypad-actions .btn {
+  flex: 1;
+  padding: 14px;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- OVERLAY DE CONFIRMACAO ---------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.overlay.active {
+  display: flex;
+}
+
+.confirm-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  animation: fadeIn 0.3s ease;
+}
+
+.confirm-card .confirm-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(234, 179, 8, 0.1);
+  border: 2px solid var(--yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.confirm-card .confirm-icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--yellow);
+}
+
+.confirm-card h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.confirm-card p {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+}
+
+.confirm-card .chapa-destaque {
+  color: var(--green);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 24px;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.confirm-actions .btn {
+  flex: 1;
+}
+
+/* ---------- TELA FINAL ---------- */
+.end-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 60px 40px;
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.end-card .check-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--green-glow);
+  border: 3px solid var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  animation: pulseGreen 1.5s ease infinite;
+}
+
+@keyframes pulseGreen {
+  0%, 100% { box-shadow: 0 0 0 0 var(--green-glow); }
+  50% { box-shadow: 0 0 0 12px transparent; }
+}
+
+.end-card .check-icon svg {
+  width: 36px;
+  height: 36px;
+  color: var(--green);
+}
+
+.end-card h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--green);
+  margin-bottom: 8px;
+  letter-spacing: 0.1em;
+}
+
+.end-card p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: 32px;
+}
+
+.end-card .btn-primary {
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 768px) {
+  .urna-body {
+    flex-direction: column;
+  }
+
+  .urna-display {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    min-height: 260px;
+    padding: 24px;
+  }
+
+  .urna-keypad {
+    width: 100%;
+  }
+
+  .fotos-container {
+    gap: 16px;
+  }
+
+  .foto-card img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .login-card {
+    padding: 32px 24px;
+  }
+}
