@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apuração - CETI Amargosa</title>
+  <link rel="stylesheet" href="style-admin.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div id="admin-login-screen" class="active">
+    <div class="login-box">
+      <img src="LOGO CETI.jpg" alt="Logo CETI" class="logo-admin" />
+      <h2>Acesso à Apuração</h2>
+      
+      <div id="login-error-admin" style="display: none; color: var(--red); background: rgba(237, 28, 36, 0.1); padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.85rem; font-weight: bold;"></div>
+      
+      <input type="email" id="input-email-admin" placeholder="E-mail de Administrador" />
+      <input type="password" id="input-senha-admin" placeholder="Senha de Acesso" />
+      
+      <button id="btn-entrar-admin">Entrar no Sistema</button>
+      <a href="teste" class="btn-voltar">Voltar para a Urna</a>
+    </div>
+  </div>
+
+  <div id="admin-dashboard-screen">
+    <header class="admin-header">
+      <div class="header-left">
+        <img src="LOGO CETI.jpg" alt="Logo CETI" class="logo-pequena" />
+        <h1>Painel de Resultados Oficiais</h1>
+      </div>
+      <button id="btn-sair-admin">Encerrar Sessão</button>
+    </header>
+
+    <div class="dashboard-container">
+      
+      <div class="controls-card">
+        <label for="select-filtro-sala">Filtrar Resultado por:</label>
+        <select id="select-filtro-sala">
+          <option value="GERAL">Resultado Geral (Todas as Turmas)</option>
+          <option value="1.o b Matutino">1.o A Matutino</option>
+          <option value="1.o A Matutino">1.o A Matutino</option>
+          <option value="1.o B Matutino">1.o B Matutino</option>
+          <option value="2.o A Matutino">2.o A Matutino</option>
+          <option value="2.o B Matutino">2.o B Matutino</option>
+          <option value="3.o A Matutino">3.o A Matutino</option>
+          <option value="3.o B Matutino">3.o B Matutino</option>
+          <option value="1.o A Vespertino">1.o A Vespertino</option>
+          <option value="1.o B Vespertino">1.o B Vespertino</option>
+          <option value="2.o A Vespertino">2.o A Vespertino</option>
+          <option value="2.o B Vespertino">2.o B Vespertino</option>
+          <option value="3.o A Vespertino">3.o A Vespertino</option>
+          <option value="3.o B Vespertino">3.o B Vespertino</option>
+          <option value="3.o b Vespertino">3.o b Vespertino</option>
+        </select>
+        <button id="btn-atualizar-dados">Recalcular Votos</button>
+      </div>
+
+      <div class="winner-card">
+        <h3 id="titulo-resultado">Carregando dados...</h3>
+        <h2 id="texto-vencedor" class="destaque-vencedor">-</h2>
+        <p id="total-votos-texto">Total de votos registrados: 0</p>
+      </div>
+
+      <div class="chart-card">
+        <canvas id="graficoVotos"></canvas>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC_3jrt-d77C6j82mvRlAzfU7ZvEXUzHfs",
+      authDomain: "votacao-ceti-amargosa.firebaseapp.com",
+      projectId: "votacao-ceti-amargosa",
+      storageBucket: "votacao-ceti-amargosa.firebasestorage.app",
+      messagingSenderId: "709523269256",
+      appId: "1:709523269256:web:4d1b010e6f312d1339613d"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth(); 
+  </script>
+
+  <script>
+    // --- LÓGICA DE LOGIN COM FIREBASE AUTH ---
+    const telaLogin = document.getElementById("admin-login-screen");
+    const telaDashboard = document.getElementById("admin-dashboard-screen");
+    const btnEntrar = document.getElementById("btn-entrar-admin");
+    const inputEmail = document.getElementById("input-email-admin");
+    const inputSenha = document.getElementById("input-senha-admin");
+    const msgErro = document.getElementById("login-error-admin");
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        telaLogin.classList.remove("active");
+        telaDashboard.style.display = "block";
+        buscarVotos(); 
+      } else {
+        telaLogin.classList.add("active");
+        telaDashboard.style.display = "none";
+      }
+    });
+
+    btnEntrar.addEventListener("click", () => {
+      const email = inputEmail.value.trim();
+      const senha = inputSenha.value;
+
+      if (!email || !senha) {
+        mostrarErro("Preencha e-mail e senha.");
+        return;
+      }
+
+      btnEntrar.disabled = true;
+      btnEntrar.textContent = "Autenticando...";
+      msgErro.style.display = "none";
+
+      auth.signInWithEmailAndPassword(email, senha)
+        .then(() => {
+          btnEntrar.disabled = false;
+          btnEntrar.textContent = "Entrar no Sistema";
+        })
+        .catch((error) => {
+          btnEntrar.disabled = false;
+          btnEntrar.textContent = "Entrar no Sistema";
+          
+          if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+            mostrarErro("E-mail ou senha incorretos.");
+          } else {
+            mostrarErro("Erro: " + error.message);
+          }
+        });
+    });
+
+    function mostrarErro(mensagem) {
+      msgErro.textContent = mensagem;
+      msgErro.style.display = "block";
+    }
+
+    document.getElementById("btn-sair-admin").addEventListener("click", () => {
+      auth.signOut().then(() => {
+        window.location.href = "../index.html";
+      });
+    });
+
+    // --- LÓGICA DE APURAÇÃO DOS VOTOS E GRÁFICOS ---
+    let todosOsVotos = [];
+    let meuGrafico = null; 
+
+    async function buscarVotos() {
+      document.getElementById("titulo-resultado").textContent = "Buscando votos no banco de dados...";
+      try {
+        const snapshot = await db.collection("votos").get();
+        todosOsVotos = [];
+        
+        snapshot.forEach(doc => {
+          todosOsVotos.push(doc.data());
+        });
+
+        atualizarPainel();
+
+      } catch (error) {
+        console.error("Erro ao buscar votos: ", error);
+        alert("Erro ao conectar com o banco de dados.");
+      }
+    }
+
+    function atualizarPainel() {
+      const salaSelecionada = document.getElementById("select-filtro-sala").value;
+      
+      let votosFiltrados = todosOsVotos;
+      if (salaSelecionada !== "GERAL") {
+        votosFiltrados = todosOsVotos.filter(voto => voto.sala === salaSelecionada);
+      }
+
+      // 1. A CHAPA FOI ADICIONADA AQUI NO CONTADOR
+      let contagem = {
+        "Renovacao": 0,
+        "Voz Ativa": 0,
+        "Futuro Jovem": 0,
+        "Força Estudantil": 0, // <-- AQUI
+        "NULO": 0
+      };
+
+      votosFiltrados.forEach(voto => {
+        let chapa = voto.chapaVotada;
+        if (contagem[chapa] !== undefined) {
+          contagem[chapa]++;
+        } else if(chapa === "Nulo" || chapa === "NULO") {
+           contagem["NULO"]++;
+        }
+      });
+
+      let chapaVencedora = "Empate / Sem Votos";
+      let maxVotos = 0;
+      for (const [chapa, qtd] of Object.entries(contagem)) {
+        if (chapa !== "NULO" && qtd > maxVotos) {
+          maxVotos = qtd;
+          chapaVencedora = chapa;
+        } else if (chapa !== "NULO" && qtd === maxVotos && maxVotos > 0) {
+          chapaVencedora = "Empate Técnico";
+        }
+      }
+
+      document.getElementById("titulo-resultado").textContent = salaSelecionada === "GERAL" ? "Situação Geral da Escola" : `Resultado na sala: ${salaSelecionada}`;
+      document.getElementById("total-votos-texto").textContent = `Total de votos registrados: ${votosFiltrados.length}`;
+      
+      if (votosFiltrados.length === 0) {
+        document.getElementById("texto-vencedor").textContent = "Nenhum voto registrado ainda.";
+      } else {
+        document.getElementById("texto-vencedor").textContent = `🏆 Liderando: ${chapaVencedora}`;
+      }
+
+      desenharGrafico(contagem);
+    }
+
+    document.getElementById("btn-atualizar-dados").addEventListener("click", buscarVotos);
+    document.getElementById("select-filtro-sala").addEventListener("change", atualizarPainel);
+
+    // --- CHART.JS (O GRÁFICO) ---
+    function desenharGrafico(contagem) {
+      const ctx = document.getElementById('graficoVotos').getContext('2d');
+      
+      if (meuGrafico !== null) {
+        meuGrafico.destroy();
+      }
+
+      meuGrafico = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          // 2. O NOME DA CHAPA FOI ADICIONADO AQUI NAS LABELS DO GRÁFICO
+          labels: ['Renovação', 'Voz Ativa', 'Futuro Jovem', 'Força Estudantil', 'Nulos'],
+          datasets: [{
+            label: 'Quantidade de Votos',
+            // 3. A CONTAGEM DA NOVA CHAPA FOI PUXADA AQUI
+            data: [
+              contagem["Renovacao"], 
+              contagem["Voz Ativa"], 
+              contagem["Futuro Jovem"], 
+              contagem["Força Estudantil"], // <-- AQUI
+              contagem["NULO"]
+            ],
+            // 4. UMA NOVA COR FOI ADICIONADA AQUI (Roxo)
+            backgroundColor: [
+              'rgba(0, 168, 89, 0.7)', 
+              'rgba(0, 174, 239, 0.7)',
+              'rgba(247, 148, 29, 0.7)',
+              'rgba(156, 39, 176, 0.7)', // <-- AQUI (Cor Roxo)
+              'rgba(237, 28, 36, 0.7)' 
+            ],
+            // 5. UMA NOVA COR DE BORDA FOI ADICIONADA AQUI
+            borderColor: [
+              '#00a859', 
+              '#00aeef', 
+              '#f7941d', 
+              '#9c27b0', // <-- AQUI
+              '#ed1c24'
+            ],
+            borderWidth: 2,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 } }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

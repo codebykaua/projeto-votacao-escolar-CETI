@@ -8,9 +8,13 @@
 </head>
 <body>
 
+  <header class="top-header">
+    <img src="images/622610208_17849005614668770_8513646390767867641_n.jpg" alt="Logo CETI Amargosa" class="logo-header" />
+    <a href="Acesso administrador/admin.html" class="btn-admin-link">Acesso Restrito</a>
+  </header>
+
   <div class="app-container">
 
-    <!-- TELA 1: LOGIN -->
     <div id="screen-login" class="screen active">
       <div class="login-card">
         <div class="login-header">
@@ -46,6 +50,7 @@
             <option value="2.o B Vespertino">2.o B Vespertino</option>
             <option value="3.o A Vespertino">3.o A Vespertino</option>
             <option value="3.o B Vespertino">3.o B Vespertino</option>
+            <option value="3.o b Vespertino">3.o b Vespertino</option>
           </select>
         </div>
 
@@ -53,7 +58,6 @@
       </div>
     </div>
 
-    <!-- TELA 2: VOTACAO -->
     <div id="screen-votacao" class="screen">
       <div class="urna">
         <div class="urna-header">
@@ -65,7 +69,6 @@
         </div>
 
         <div class="urna-body">
-          <!-- Display do candidato -->
           <div class="urna-display">
             <div id="display-placeholder" class="display-placeholder">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -102,7 +105,6 @@
             </div>
           </div>
 
-          <!-- Teclado numerico -->
           <div class="urna-keypad">
             <span class="keypad-label">Numero da Chapa</span>
 
@@ -133,7 +135,6 @@
       </div>
     </div>
 
-    <!-- TELA 4: FIM -->
     <div id="screen-fim" class="screen">
       <div class="end-card">
         <div class="check-icon">
@@ -149,7 +150,6 @@
 
   </div>
 
-  <!-- OVERLAY: CONFIRMACAO -->
   <div id="overlay-confirm" class="overlay">
     <div class="confirm-card">
       <div class="confirm-icon">
@@ -167,11 +167,9 @@
     </div>
   </div>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-  <!-- Configuracao Firebase -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyC_3jrt-d77C6j82mvRlAzfU7ZvEXUzHfs",
@@ -185,7 +183,6 @@
     const db = firebase.firestore();
   </script>
 
-  <!-- Script principal -->
   <script src="script.js"></script>
 
 </body>

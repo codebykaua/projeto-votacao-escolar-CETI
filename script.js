@@ -6,6 +6,12 @@
 // ---- Dados das chapas (editar aqui) ----
 const chapas = [
   {
+    numero: "90",
+    nome: "Força Estudantil",
+    lider: { nome: "Lucas Mendes", foto: "images/candidato1.jpg" },
+    vice: { nome: "Ana Beatriz", foto: "images/vice1.jpg" },
+  },
+  {
     numero: "10",
     nome: "Renovacao",
     lider: { nome: "Lucas Mendes", foto: "images/candidato1.jpg" },
